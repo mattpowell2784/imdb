@@ -14,7 +14,9 @@ function getFilmSearchValue() {
 
 function runFilmSearch(filmSearchStr) {
   let film;
-  let test = fetch(`http://www.omdbapi.com/?s=${filmSearchStr}&apikey=8865cca5`)
+  let test = fetch(
+    `https://www.omdbapi.com/?s=${filmSearchStr}&apikey=8865cca5`
+  )
     .then(response => response.json())
     .then(data => {
       film = data;
