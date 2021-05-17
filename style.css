@@ -55,6 +55,10 @@ body {
   outline: none;
 }
 
+.title__text {
+  color: white;
+}
+
 .search__button {
   height: 5rem;
   width: 10rem;

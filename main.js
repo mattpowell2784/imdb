@@ -2,35 +2,44 @@
 
 getFilmSearchValue();
 function getFilmSearchValue() {
-  const searchButton = document.querySelector('.search__button');
+  const searchInput = document.querySelector('.search__input');
 
-  searchButton.addEventListener('click', function () {
-    event.preventDefault();
+  searchInput.addEventListener('keyup', function (e) {
     let searchFor = document.querySelector('.search__input').value;
     console.log(searchFor);
-    runFilmSearch(searchFor);
+    if (searchFor.length > 2) {
+      runFilmSearch(searchFor);
+    }
   });
 }
 
-function runFilmSearch(filmSearchStr) {
-  let film;
-  let test = fetch(
-    `https://www.omdbapi.com/?s=${filmSearchStr}&apikey=8865cca5`
-  )
-    .then(response => response.json())
-    .then(data => {
-      film = data;
-      console.log(film);
+async function runFilmSearch(filmSearchStr) {
+  try {
+    //fetch films
+    let filmFetch = await fetch(
+      `https://www.omdbapi.com/?s=${filmSearchStr}&apikey=8865cca5`
+    );
+    filmData = await filmFetch.json();
+    console.log(filmData);
 
-      for (let i = 0; i < 5; i++) {
-        document.getElementById(`film poster${i}`).src = film.Search[i].Poster;
-        document.getElementById(`film title${i}`).innerHTML =
-          film.Search[i].Title;
-        document.getElementById(`film year${i}`).innerHTML =
-          film.Search[i].Year;
-      }
-      document.getElementById('films').style.visibility = 'visible';
-    });
+    //throw errors
+    //if (filmData.response === false) {
+    //throw Error;
+    //}
 
-  //fetch("http://www.omdbapi.com/?i=tt3896198&apikey=8865cca5")
+    //render films
+    for (let i = 0; i < 5; i++) {
+      document.getElementById(`film poster${i}`).src =
+        filmData.Search[i].Poster;
+      document.getElementById(`film title${i}`).innerHTML =
+        filmData.Search[i].Title;
+      document.getElementById(`film year${i}`).innerHTML =
+        filmData.Search[i].Year;
+    }
+
+    document.getElementById('films').style.visibility = 'visible';
+  } catch {
+    console.log('a');
+    return;
+  }
 }
